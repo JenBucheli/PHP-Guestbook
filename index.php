@@ -4,20 +4,43 @@ declare(strict_types=1);
 require 'Post.php';
 require 'PostLoader.php';
 
-session_start();
 
 
-    if(isset($_POST['title']) && isset($_POST['content'])!='' && $_POST['authorName']!='') {
+    if(isset($_POST['title']) && isset($_POST['content'])!='' && isset($_POST['authorName'])!='') {
 
-        $title = $_POST['title'];
-        $content = $_POST['content'];
-        $authorName = $_POST['authorName'];
-        $date = $_POST['date'];
+        $title = htmlspecialchars($_POST['title']);
+        $content = htmlspecialchars($_POST['content']);
+        $authorName = htmlspecialchars($_POST['authorName']);
+        $date = htmlspecialchars($_POST['date']);
+
+
+        $postLoader = new PostLoader();
+        $notes = $postLoader->getData();
+
+        if ($title != '' && $date != '' && $content != '' && $authorName != '') {
+
+            $post = new Post($title, $date, $content, $authorName);
+            $postLoader->saveData($post);
+
+            header('location: index.php');
+            exit;
+        }
+
+        $counter = 0;
+        $notes = array_reverse($notes);
+        foreach ($notes as $note) {
+            echo $note->getTitle();
+            echo $note->getDate();
+            echo $note->getContent();
+            echo $note->getAuthorName();
+
+            echo '<hr>';
+            $counter++;
+            if ($counter == 5) {
+                break;
+            }
+        }
     }
-    if (empty($_POST["title"])) {
-    $titleErr = "Title is required";
-    $isFormValid = false;}
-
 ?>
 
 

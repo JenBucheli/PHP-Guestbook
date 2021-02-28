@@ -1,20 +1,17 @@
 <?php
 
-
-require_once 'index.php';
-
 class Post
 {
     private string $title;
-    private DateTime $date;
+    private string $date;
     private string $content;
     private string $authorName;
 
-    public function __construct(string$title,string $content,string$authorName){
+    public function __construct(string$title,string $date,string $content,string$authorName){
         $this->title = $title;
         $this->title = $content;
         $this->authorName = $authorName;
-        $this->date = new DateTime();
+        $this->date = $date;
     }
 
     /**
@@ -42,11 +39,10 @@ class Post
     }
 
 
-    public function getDate(DateTime $time)
+    public function getDate():string
     {
-        $date ='';
-        $this->date=$date;
 
+        return $this->date;
     }
 
 }
